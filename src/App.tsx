@@ -6,8 +6,7 @@ import { HashRouter } from "react-router-dom";
 import services from "./api/services";
 
 import { CssBaseline } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import StylesProvider from "@mui/styles/StylesProvider";
+import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 
 import RootComponent from "./pages/Root/index";
 import { osapiens } from "./themes";
@@ -47,13 +46,13 @@ const AppContainer = () => {
               variantInfo: classes.info
             }}
           >
-            <StylesProvider injectFirst>
+            <StyledEngineProvider injectFirst>
               <ThemeProvider theme={theme}>
                 <HashRouter>
                   <RootComponent />
                 </HashRouter>
               </ThemeProvider>
-            </StylesProvider>
+            </StyledEngineProvider>
           </SnackbarProvider>
         </CombinedStoreProvider>
       </Suspense>
