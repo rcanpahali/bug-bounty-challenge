@@ -8,8 +8,7 @@ A React 19 + TypeScript 5 single-page application built with Vite 6. It uses MUI
 
 ## Commands
 
-Always run `npm run typecheck` after making code changes to confirm there are no type errors.
-Run `npm run lint:fix` to auto-fix style and lint issues before committing.
+Always run both `npm run typecheck` (TypeScript) and `npm run lint` (ESLint) after making changes — they catch different types of errors.
 
 ## Key Conventions
 
@@ -41,13 +40,15 @@ Follow the Conventional Commits format:
 <type>(<optional scope>): <short description>
 ```
 
-| Type       | When to use                                                      |
-| ---------- | ---------------------------------------------------------------- |
-| `feat`     | A new feature visible to users or consumers of the API          |
-| `fix`      | A bug fix                                                        |
-| `chore`    | Maintenance tasks: dependency updates, tooling, config changes   |
-| `docs`     | Documentation-only changes (README, comments, guides)           |
-| `style`    | Formatting, whitespace, semicolons — no logic change            |
-| `refactor` | Code restructuring without feature addition or bug fix          |
+| Type       | When to use                                                    |
+| ---------- | -------------------------------------------------------------- |
+| `feat`     | A new feature visible to users or consumers of the API         |
+| `fix`      | A bug fix                                                      |
+| `chore`    | Maintenance tasks: dependency updates, tooling, config changes |
+| `docs`     | Documentation-only changes (README, comments, guides)          |
+| `style`    | Formatting, whitespace, semicolons — no logic change           |
+| `refactor` | Code restructuring without feature addition or bug fix         |
+
+A common order: feat > fix > refactor > chore > style > docs.
 
 ---
