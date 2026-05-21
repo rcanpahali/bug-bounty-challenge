@@ -6,13 +6,13 @@ import Store from "./store";
 CONTEXT / PROVIDER INIT
 */
 
+const store = new Store();
+
 const UserStoreContext = createContext<Store | null>(null);
 
-export const StoreProvider: React.FC = (props) => {
-  const { children } = props;
-
+export const StoreProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <UserStoreContext.Provider value={new Store()}>
+    <UserStoreContext.Provider value={store}>
       {children}
     </UserStoreContext.Provider>
   );
