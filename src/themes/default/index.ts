@@ -18,6 +18,7 @@ declare module "@mui/material/styles" {
   interface Theme {
     tokens: OsapiensThemeTokens;
   }
+  
   interface BreakpointOverrides {
     xs: true;
     sm: true;

@@ -1,3 +1,5 @@
+import type { ReactElement } from "react";
+
 export enum ERoute {
   ROOT = "/",
   HOME = "/home"
@@ -5,7 +7,7 @@ export enum ERoute {
 
 export type TRoute = {
   path: ERoute;
-  Icon?: React.FC | JSX.Element;
+  Icon?: React.FC | ReactElement;
   Component: React.FC; // React components have to be written in Capitalized!
 };
 

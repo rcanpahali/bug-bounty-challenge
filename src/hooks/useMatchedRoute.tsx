@@ -1,5 +1,5 @@
 import { Box, Fade, Grow, Slide } from "@mui/material";
-import React from "react";
+import React, { type ReactElement } from "react";
 import { matchPath, Route, Routes, useLocation } from "react-router-dom";
 import { PathParams, TRoute } from "../types/global";
 import { validateParams } from "../utils/router";
@@ -24,10 +24,9 @@ const useMatchedRoute = (
 ): {
   route: TRoute;
   params: PathParams | null;
-  MatchedElement: JSX.Element;
+  MatchedElement: ReactElement;
 } => {
-  const { notFoundComponent, matchOnSubPath, transition = "fade" } =
-    options || {};
+  const { notFoundComponent, matchOnSubPath, transition = "fade" } = options || {};
   const location = useLocation();
   const results = routes
     .map((route: TRoute): {
@@ -84,7 +83,7 @@ const useMatchedRoute = (
   return {
     route: route,
     params:
-      match && validateParams(route.path, match.params) ? match.params as PathParams : {},
+      match && validateParams(route.path, match.params) ? match.params : {},
     MatchedElement: (
       <Routes>
         {matchOnSubPath &&

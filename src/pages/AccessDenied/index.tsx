@@ -27,7 +27,7 @@ const AccessDenied: React.FC = () => {
     return () => {
       // clearCache()
     };
-    // eslint-disable-next-line
+     
   }, []);
 
   // TODO: aldd all i18n texts to locales and refactor file

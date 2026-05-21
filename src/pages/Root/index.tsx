@@ -7,7 +7,6 @@ import { observer } from "mobx-react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { TRoute } from "../../types/global";
-import { resultOrError } from "../../utils/global";
 import AccessDenied from "../AccessDenied";
 import { routes as useRoutes } from "../routes";
 
