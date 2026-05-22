@@ -5,6 +5,6 @@ export default defineConfig({
   extract: {
     input: ["src/**/*.{ts,tsx}"],
     output: "src/i18n/locales/{{language}}.json",
-    mergeNamespaces: true,
-  },
+    mergeNamespaces: true
+  }
 });

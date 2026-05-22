@@ -30,7 +30,7 @@ export const defaultTranslationModules = [
 ];
 export const defaultLanguages = defaultTranslationModules.map((m) => m.locale);
 
-const resources = cloneDeep(Object.fromEntries(defaultTranslationModules.map((m) => [m.locale, { app: m.texts }])));
+const resources = cloneDeep(Object.fromEntries(defaultTranslationModules.map((m) => [m.locale, m.texts])));
 
 i18n
   // pass the i18n instance to react-i18next.
