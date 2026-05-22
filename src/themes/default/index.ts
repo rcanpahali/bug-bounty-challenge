@@ -1,6 +1,7 @@
 import { merge } from "lodash";
 
-import { createTheme } from "@mui/material/styles";
+import { createTheme, ThemeOptions } from "@mui/material/styles";
+import { common, grey } from "@mui/material/colors";
 
 // import MaterialDesignIcons from "!!url-loader!@mdi/font/fonts/materialdesignicons-webfont.woff2"
 import tokens, { fonts, OsapiensThemeTokens } from "./tokens";
@@ -17,6 +18,10 @@ import tokens, { fonts, OsapiensThemeTokens } from "./tokens";
 declare module "@mui/material/styles" {
   interface Theme {
     tokens: OsapiensThemeTokens;
+  }
+
+  interface ThemeOptions {
+    tokens?: OsapiensThemeTokens;
   }
 
   interface BreakpointOverrides {
@@ -96,21 +101,29 @@ const commonTheme = {
   }
 };
 
-const muiBaseTheme = createTheme();
-
-const tokensLight: any = merge({}, commonTheme, {
+const tokensLight: ThemeOptions = merge({}, commonTheme, {
   palette: {
-    mode: "light"
+    mode: "light" as const
   },
-  tokens
+  tokens,
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: common.black,
+          color: common.white
+        }
+      }
+    }
+  }
 });
 
-const tokensDark: any = merge({}, commonTheme, {
+const tokensDark: ThemeOptions = merge({}, commonTheme, {
   palette: {
-    mode: "dark",
+    mode: "dark" as const,
     background: {
-      default: muiBaseTheme.palette.common.black,
-      paper: muiBaseTheme.palette.grey["900"]
+      default: common.black,
+      paper: grey[900]
     }
   },
   tokens

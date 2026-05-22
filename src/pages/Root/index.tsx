@@ -69,7 +69,7 @@ const Root = () => {
           display: "flex",
           height: "100%",
           width: "100%",
-          backgroundColor: theme.tokens.color.backgroundSecondary
+          backgroundColor: theme.palette.background.default
         }}
       >
         <Slide direction="down" in={!loadingApp} mountOnEnter>

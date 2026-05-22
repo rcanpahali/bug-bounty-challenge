@@ -8,6 +8,10 @@
       "welcome": "Welcome!"
     },
     "logout": "Logout",
-    "speakToYourAdmin": "Please speak to your administrator"
+    "speakToYourAdmin": "Please speak to your administrator",
+    "theme": {
+      "light": "Light",
+      "dark": "Dark"
+    }
   }
 }

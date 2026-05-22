@@ -8,6 +8,10 @@
       "welcome": "Willkommen!"
     },
     "logout": "Abmelden",
-    "speakToYourAdmin": "Wenden Sie sich an Ihren Administrator"
+    "speakToYourAdmin": "Wenden Sie sich an Ihren Administrator",
+    "theme": {
+      "light": "Hell",
+      "dark": "Dunkel"
+    }
   }
 }

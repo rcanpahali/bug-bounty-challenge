@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { User } from "../../api/services/User/store";
 import AvatarMenu from "../AvatarMenu";
 import LanguageSwitcher from "../LanguageSwitcher";
+import ThemeSwitcher from "../ThemeSwitcher";
 
 interface AppBarProps extends MuiAppBarProps {
   theme?: Theme;
@@ -26,8 +27,6 @@ const typoStyle = {
 
 const AppBar = styled(MuiAppBar)<AppBarProps>(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  backgroundColor: theme.palette.common.black,
-  color: theme.palette.common.white,
   height: theme.tokens.header.height
 }));
 
@@ -50,7 +49,7 @@ const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>((props, ref) => 
 
   return (
     <AppBar ref={ref} position="fixed" sx={{ width: "100vw" }}>
-      <Toolbar sx={{ backgroundColor: theme.tokens.color.backgroundPrimary }}>
+      <Toolbar>
         <Box sx={{ width: "100%", flexDirection: "row", display: "flex" }}>
           <Box>
             <Typography variant="h6" component="div" color="primary">
@@ -75,6 +74,7 @@ const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>((props, ref) => 
             </Typography>
           </Box>
           <Box sx={{ flex: 1, justifyContent: "flex-end", display: "flex", alignItems: "center", gap: 1 }}>
+            <ThemeSwitcher />
             <LanguageSwitcher />
             <Grow in={Boolean(user?.email)} mountOnEnter unmountOnExit>
               <Box sx={{ display: "flex" }}>{user && <AvatarMenu user={user} />}</Box>
