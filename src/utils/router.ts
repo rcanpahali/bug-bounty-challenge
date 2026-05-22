@@ -1,9 +1,6 @@
 import { PathParams } from "../types/global";
 
-export const validateParams = <ERoute extends string>(
-  path: ERoute,
-  params: unknown
-): params is PathParams => {
+export const validateParams = <ERoute extends string>(path: ERoute, params: unknown): params is PathParams => {
   if (!(params instanceof Object)) return false;
 
   const paramSet = new Set(Object.keys(params));
@@ -22,10 +19,7 @@ export const validateParams = <ERoute extends string>(
 };
 
 // build a valid url with the path and its parameters
-export const buildUrl = <ERoute extends string>(
-  path: ERoute,
-  params: PathParams
-): string => {
+export const buildUrl = <ERoute extends string>(path: ERoute, params: PathParams): string => {
   let ret: string = path;
 
   // Upcast `params` to be used in string replacement.

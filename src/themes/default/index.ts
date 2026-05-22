@@ -18,7 +18,7 @@ declare module "@mui/material/styles" {
   interface Theme {
     tokens: OsapiensThemeTokens;
   }
-  
+
   interface BreakpointOverrides {
     xs: true;
     sm: true;
@@ -37,27 +37,27 @@ const commonTheme = {
     mode: "light",
     primary: {
       // light: tokens.color.primary, // will be calculated from palette.primary.main
-      main: tokens.color.primary
+      main: tokens.color.primary,
       // dark: tokens.color.primary, // will be calculated from palette.primary.main
     },
     secondary: {
       // light: tokens.color.secondary, // will be calculated from palette.primary.main
-      main: tokens.color.secondary
+      main: tokens.color.secondary,
       // dark: tokens.color.secondary, // will be calculated from palette.primary.main
     },
     success: {
       // light: tokens.color.success, // will be calculated from palette.primary.main
-      main: tokens.color.success
+      main: tokens.color.success,
       // dark: tokens.color.success, // will be calculated from palette.primary.main
     },
     warning: {
       // light: tokens.color.warning, // will be calculated from palette.primary.main
-      main: tokens.color.warning
+      main: tokens.color.warning,
       // dark: tokens.color.warning, // will be calculated from palette.primary.main
     },
     error: {
       // light: tokens.color.error, // will be calculated from palette.primary.main
-      main: tokens.color.error
+      main: tokens.color.error,
       // dark: tokens.color.error, // will be calculated from palette.primary.main
     },
     // Used by `getContrastText()` to maximize the contrast between
@@ -68,11 +68,11 @@ const commonTheme = {
     // E.g., shift from Red 500 to Red 300 or Red 700.
     tonalOffset: {
       light: 0.2,
-      dark: 0.2
-    }
+      dark: 0.2,
+    },
   },
   shape: {
-    borderRadius: tokens.style.radius
+    borderRadius: tokens.style.radius,
   },
   breakpoints: {
     values: {
@@ -84,25 +84,25 @@ const commonTheme = {
       mobile: tokens.breakpoints.breakpointMobile,
       tablet: tokens.breakpoints.breakpointTablet,
       laptop: tokens.breakpoints.breakpointLaptop,
-      desktop: tokens.breakpoints.breakpointDesktop
-    }
+      desktop: tokens.breakpoints.breakpointDesktop,
+    },
   },
   overrides: {
     MuiCssBaseline: {
       "@global": {
-        "@font-face": fonts
-      }
-    }
-  }
+        "@font-face": fonts,
+      },
+    },
+  },
 };
 
 const muiBaseTheme = createTheme();
 
 const tokensLight: any = merge({}, commonTheme, {
   palette: {
-    mode: "light"
+    mode: "light",
   },
-  tokens
+  tokens,
 });
 
 const tokensDark: any = merge({}, commonTheme, {
@@ -110,15 +110,15 @@ const tokensDark: any = merge({}, commonTheme, {
     mode: "dark",
     background: {
       default: muiBaseTheme.palette.common.black,
-      paper: muiBaseTheme.palette.grey["900"]
-    }
+      paper: muiBaseTheme.palette.grey["900"],
+    },
   },
-  tokens
+  tokens,
 });
 
 const osapiensTheme = {
   light: createTheme(tokensLight),
-  dark: createTheme(tokensDark)
+  dark: createTheme(tokensDark),
 };
 
 export default osapiensTheme;

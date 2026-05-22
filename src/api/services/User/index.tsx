@@ -11,11 +11,7 @@ const store = new Store();
 const UserStoreContext = createContext<Store | null>(null);
 
 export const StoreProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  return (
-    <UserStoreContext.Provider value={store}>
-      {children}
-    </UserStoreContext.Provider>
-  );
+  return <UserStoreContext.Provider value={store}>{children}</UserStoreContext.Provider>;
 };
 
 /* 
