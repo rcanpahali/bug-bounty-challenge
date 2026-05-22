@@ -25,7 +25,7 @@ const AppContainer = () => {
           <ThemeProvider theme={theme}>
             <UserStoreProvider>
               <SnackbarProvider>
-                <HashRouter>
+                <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                   <RootComponent />
                 </HashRouter>
               </SnackbarProvider>

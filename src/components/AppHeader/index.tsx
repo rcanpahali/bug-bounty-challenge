@@ -12,7 +12,7 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 interface AppHeaderProps {
-  user: User;
+  user: User | null; // todo: check this again, should it be nullable or not?
   pageTitle: string;
 }
 
@@ -74,11 +74,9 @@ const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>((props, ref) => 
             </Typography>
           </Box>
           <Box sx={{ flex: 1, justifyContent: "flex-end", display: "flex" }}>
-            {user && user.eMail && (
-              <Grow in={Boolean(user && user.eMail)}>
-                <AvatarMenu user={user} />
-              </Grow>
-            )}
+            <Grow in={Boolean(user?.email)} mountOnEnter unmountOnExit>
+              <Box sx={{ display: "flex" }}>{user && <AvatarMenu user={user} />}</Box>
+            </Grow>
           </Box>
         </Box>
       </Toolbar>

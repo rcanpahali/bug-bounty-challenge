@@ -1,12 +1,14 @@
 import { mdiLogoutVariant, mdiTag } from "@mdi/js";
 import Icon from "@mdi/react";
-import { Avatar, Box, Button, Divider, Tooltip, Typography } from "@mui/material";
+import { Avatar, Box, Button, Divider, IconButton, Tooltip, Typography } from "@mui/material";
 import { indigo } from "@mui/material/colors";
 import Menu from "@mui/material/Menu";
 import { useTheme } from "@mui/material/styles";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { User } from "../../api/services/User/store";
+
+// todo: restructure this component.
 
 interface AvatarMenuProps {
   user: User;
@@ -46,7 +48,16 @@ const AvatarMenu = (props: AvatarMenuProps) => {
 
   return (
     <div>
-      <Avatar onClick={handleClick} {...stringAvatar(user)} />
+      <IconButton
+        id="demo-positioned-button"
+        aria-controls={open ? "demo-positioned-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        sx={{ p: 0 }}
+      >
+        <Avatar {...stringAvatar(user)} />
+      </IconButton>
       <Menu
         id="demo-positioned-menu"
         aria-labelledby="demo-positioned-button"
@@ -65,7 +76,7 @@ const AvatarMenu = (props: AvatarMenuProps) => {
         <Box display="flex" flexDirection="column" alignItems="center" p={1}>
           <Typography variant="h6">{`${user.firstName} ${user.lastName}`}</Typography>
           <Typography variant="body2" color="textSecondary">
-            {user.eMail}
+            {user.email}
           </Typography>
           <Box m={1} />
           <Button

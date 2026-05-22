@@ -39,7 +39,7 @@ This is an attempt to provide a helpful but not exhaustive developer guide.
 - Target: `esnext`; module resolution: `bundler`.
 - Prefer `interface` for prop shapes (e.g., `AppHeaderProps`); use `type` for unions and utility types.
 - Enums are declared in `src/types/global.ts` when shared across the app.
-- Do **not** use `any`; use proper generics (e.g., `ResultOrErrorResponse<T>`).
+- Do **not** use `any`; use proper generics (e.g., `ResultAsync<T, Error>`).
 
 ---
 
@@ -57,7 +57,6 @@ This is an attempt to provide a helpful but not exhaustive developer guide.
   const AppBar = styled(MuiAppBar)<AppBarProps>(({ theme }) => ({ ... }));
   ```
 - Use `sx` prop for one-off inline style overrides; avoid plain inline `style={{}}`.
-- Use `React.useMemo` for memoizing derived components (e.g., transition wrappers in hooks).
 
 ---
 
@@ -69,11 +68,7 @@ This is an attempt to provide a helpful but not exhaustive developer guide.
 - Each store is provided through a **Context + Provider** pattern defined in the domain's `index.tsx`:
   ```tsx
   const DomainContext = createContext<Store | null>(null);
-  export const StoreProvider: React.FC = ({ children }) => (
-    <DomainContext.Provider value={new Store()}>
-      {children}
-    </DomainContext.Provider>
-  );
+  export const StoreProvider: React.FC = ({ children }) => <DomainContext.Provider value={new Store()}>{children}</DomainContext.Provider>;
   export const useDomainStore = () => useContext(DomainContext);
   ```
 - All providers are combined in `CombinedStoreProvider` inside `App.tsx`.
@@ -83,18 +78,10 @@ This is an attempt to provide a helpful but not exhaustive developer guide.
 
 ## API / Async Actions
 
-- All async store actions return a typed union:
-  ```ts
-  ActionSuccess<T> | ActionError;
-  ```
-  defined in `src/types/global.ts`.
-- Use the `resultOrError` utility to convert promise rejections to a `[result, error]` tuple:
-  ```ts
-  const [result, error] = (await resultOrError(
-    somePromise,
-  )) as ResultOrErrorResponse<T>;
-  ```
-- Check `error` first, then `result`.
+- All async store actions return `ResultAsync<T, Error>` from `neverthrow`.
+- Wrap promise-based work with `ResultAsync.fromPromise(promise, toError)` and chain transformations with `.map(...)` / `.andThen(...)`.
+- Convert unknown failures to `Error` in one place (e.g., `const toError = (e: unknown): Error => e instanceof Error ? e : new Error(String(e));`).
+- At call sites, handle both branches explicitly with `.match(onOk, onErr)`.
 
 ---
 
@@ -126,6 +113,6 @@ This is an attempt to provide a helpful but not exhaustive developer guide.
 
 ## Versioning & Changesets
 
-- This project uses **Changesets** for versioning.
-- Add a changeset entry under `.changeset/` for every notable change before merging.
+- The project uses **@changesets/cli** for versioning.
+- Changesets live under `.changeset/` for every notable change before merging.
 - Run `npx changeset` to generate a new changeset interactively.

@@ -14,7 +14,7 @@ Always run both `npm run typecheck` (TypeScript) and `npm run lint` (ESLint) aft
 
 - **Components**: `React.FC` with explicit prop interfaces; PascalCase folders under `src/components/` and `src/pages/`, each with an `index.tsx` entry.
 - **State**: MobX store class per domain in `src/api/services/<Domain>/store.ts`; state mutations inside async actions must use `runInAction`. Context + Provider + hook exported from the domain's `index.tsx`.
-- **Async actions**: Use `resultOrError` from `src/utils/global.ts` to get a `[result, error]` tuple; return `ActionSuccess<T> | ActionError` (types in `src/types/global.ts`).
+- **Async actions**: Use `neverthrow` `ResultAsync<T, Error>` for async store actions. Prefer `ResultAsync.fromPromise(...).map(...)` and handle outcomes with `.match(...)` at call sites.
 - **Routing**: Paths defined in the `ERoute` enum (`src/types/global.ts`); route list in `src/pages/routes.tsx`.
 - **i18n**: All display strings go through `useTranslation("app")` and must have entries in both `src/i18n/locales/en.json` and `de.json`. Never hardcode UI text.
 - **Styling**: Use MUI `sx` prop or `styled()` for all styles; prefer `theme.tokens.*`, `theme.palette.*`, and `theme.spacing()` over hardcoded values.
@@ -24,13 +24,20 @@ See [conventions.md](conventions.md) for the full reference.
 
 ## Changesets
 
-Add a changeset for every user-facing or API change:
-
-```bash
-npx changeset   # interactive prompt
-```
+When asked to create a changeset, use the following format.
 
 Changeset files live in `.changeset/` and must be committed with the change.
+
+Use the following format for the changeset description:
+
+```
+---
+"package-name": patch|minor|major
+---
+<Short summary of the change (1-2 sentences)>
+
+- A bullet point summary of the changes, including any relevant context.
+```
 
 ## Commit Messages
 

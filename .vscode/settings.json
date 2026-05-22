@@ -6,5 +6,10 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "cSpell.words": ["neverthrow", "notistack", "osapiens"]
+  "cSpell.words": ["hookz", "neverthrow", "notistack", "osapiens"],
+  "chat.tools.terminal.autoApprove": {
+    "npx prettier": true,
+    "npx eslint": true,
+    "npx changeset": true
+  }
 }

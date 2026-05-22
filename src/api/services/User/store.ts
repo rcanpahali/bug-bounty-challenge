@@ -1,62 +1,85 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import {
-  ActionError,
-  ActionResultStatus,
-  ActionSuccess
-} from "../../../types/global";
-import { resultOrError, ResultOrErrorResponse } from "../../../utils/global";
+import { ResultAsync } from "neverthrow";
 
 export interface User {
   firstName?: string;
   lastName?: string;
-  eMail?: string;
+  email?: string;
 }
 
-export default class UserStore {
-  user: User | null = null;
+type TBootstrappedUser = { status: "idle" } | { status: "loading" } | { status: "ready"; user: User } | { status: "error"; error: Error };
 
-  // init function
+const toError = (e: unknown): Error => (e instanceof Error ? e : new Error(String(e)));
+
+export default class UserStore {
+  bootstrappedUser: TBootstrappedUser = { status: "idle" };
+  private bootstrapTask: ResultAsync<User, Error> | null = null;
+
   constructor() {
     makeAutoObservable(this);
   }
 
-  // actions
-  async getOwnUser() {
-    const [result, error] = (await resultOrError(
+  get user(): User | null {
+    return this.bootstrappedUser.status === "ready" ? this.bootstrappedUser.user : null;
+  }
+
+  get isLoading(): boolean {
+    return this.bootstrappedUser.status === "loading" || this.bootstrappedUser.status === "idle";
+  }
+
+  get hasError(): boolean {
+    return this.bootstrappedUser.status === "error";
+  }
+
+  getOwnUser(): ResultAsync<User, Error> {
+    const fetchUser = (): Promise<User> =>
       new Promise((resolve) =>
         setTimeout(
           () =>
             resolve({
               firstName: "Aria",
               lastName: "Test",
-              eMail: "linda.bolt@osapiens.com"
+              email: "linda.bolt@osapiens.com",
             }),
-          500
-        )
-      )
-    )) as ResultOrErrorResponse<User>;
+          500,
+        ),
+      );
 
-    if (error) {
-      return {
-        status: ActionResultStatus.ERROR,
-        error
-      } as ActionError;
+    // review: neverthrow wraps promise-based async calls and allows us to handle success and error cases with `.match()` at call sites,
+    return ResultAsync.fromPromise(fetchUser(), toError);
+  }
+
+  bootstrapUser(): ResultAsync<User, Error> {
+    if (this.bootstrappedUser.status === "loading" && this.bootstrapTask) {
+      return this.bootstrapTask;
     }
 
-    if (result) {
-      runInAction(() => {
-        this.urser = result;
+    if (this.bootstrappedUser.status === "ready") {
+      return ResultAsync.fromPromise(Promise.resolve(this.bootstrappedUser.user), toError);
+    }
+
+    runInAction(() => {
+      this.bootstrappedUser = { status: "loading" };
+    });
+
+    // .map() runs only on success, .mapErr() runs only on failure. they are independent and don't chain into each other.
+    const task = this.getOwnUser()
+      .map((user) => {
+        runInAction(() => {
+          this.bootstrappedUser = { status: "ready", user };
+          this.bootstrapTask = null;
+        });
+        return user;
+      })
+      .mapErr((error) => {
+        runInAction(() => {
+          this.bootstrappedUser = { status: "error", error };
+          this.bootstrapTask = null;
+        });
+        return error;
       });
 
-      return {
-        status: ActionResultStatus.SUCCESS,
-        result: result
-      } as ActionSuccess<User>;
-    }
-
-    return {
-      status: ActionResultStatus.ERROR,
-      error: "Something went wrong."
-    } as ActionError;
+    this.bootstrapTask = task;
+    return task;
   }
 }
