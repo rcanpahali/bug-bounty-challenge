@@ -14,7 +14,7 @@ const Container = styled("div")(() => ({
   flexDirection: "column",
   alignItems: "center",
   overflowY: "scroll",
-  background: `url(${""}) repeat content-box`,
+  background: `url(${""}) repeat content-box`
 }));
 const AccessDenied: React.FC = () => {
   const { t } = useTranslation("app");

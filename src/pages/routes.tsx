@@ -27,6 +27,6 @@ export const routes: TRoute[] = [
   {
     path: ERoute.HOME,
     Icon: <Icon path={mdiHome} size={1} />,
-    Component: lazyLoad(Home),
-  },
+    Component: lazyLoad(Home)
+  }
 ];

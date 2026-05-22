@@ -39,10 +39,10 @@ export default class UserStore {
             resolve({
               firstName: "Aria",
               lastName: "Test",
-              email: "linda.bolt@osapiens.com",
+              email: "linda.bolt@osapiens.com"
             }),
-          500,
-        ),
+          500
+        )
       );
 
     // review: neverthrow wraps promise-based async calls and allows us to handle success and error cases with `.match()` at call sites,

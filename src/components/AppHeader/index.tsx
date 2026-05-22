@@ -20,14 +20,14 @@ const typoStyle = {
   display: "flex",
   alignContent: "center",
   justifyContent: "center",
-  lineHeight: 1,
+  lineHeight: 1
 };
 
 const AppBar = styled(MuiAppBar)<AppBarProps>(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
   backgroundColor: theme.palette.common.black,
   color: theme.palette.common.white,
-  height: theme.tokens.header.height,
+  height: theme.tokens.header.height
 }));
 
 const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>((props, ref) => {
@@ -62,7 +62,7 @@ const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>((props, ref) => 
               sx={{
                 ...typoStyle,
                 color: theme.palette.primary.main,
-                mb: theme.spacing(0.5),
+                mb: theme.spacing(0.5)
               }}
               variant="h6"
               component="div"

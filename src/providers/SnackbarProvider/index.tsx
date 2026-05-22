@@ -8,7 +8,7 @@ const StyledSnackbarContent = styled(SnackbarContent)<{ variant: CustomContentPr
   ...(variant === "success" && { backgroundColor: theme.palette.success.main }),
   ...(variant === "error" && { backgroundColor: theme.palette.error.main }),
   ...(variant === "warning" && { backgroundColor: theme.palette.warning.main }),
-  ...(variant === "info" && { backgroundColor: theme.palette.info.main }),
+  ...(variant === "info" && { backgroundColor: theme.palette.info.main })
 }));
 
 const VariantSnackbar = React.forwardRef<HTMLDivElement, CustomContentProps>(({ id: _id, variant, ...props }, ref) => (
@@ -23,7 +23,7 @@ const SnackbarProvider: React.FC<React.PropsWithChildren> = ({ children }) => (
       success: VariantSnackbar,
       error: VariantSnackbar,
       warning: VariantSnackbar,
-      info: VariantSnackbar,
+      info: VariantSnackbar
     }}
   >
     {children}

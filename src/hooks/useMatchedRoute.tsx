@@ -47,7 +47,7 @@ const DefaultNotFound: React.FC = () => <>not found</>;
 const useMatchedRoute = (
   routes: ReadonlyArray<TRoute>,
   fallbackComponent?: React.FC,
-  options?: UseMatchedRouteOptions,
+  options?: UseMatchedRouteOptions
 ): {
   route: TRoute;
   params: PathParams | null;
@@ -58,14 +58,14 @@ const useMatchedRoute = (
   const results = routes
     .map(
       (
-        route: TRoute,
+        route: TRoute
       ): {
         route: TRoute;
         match: ReturnType<typeof matchPath> | null;
       } => ({
         route,
-        match: matchPath({ path: route.path, end: !matchOnSubPath, caseSensitive: !matchOnSubPath }, location.pathname),
-      }),
+        match: matchPath({ path: route.path, end: !matchOnSubPath, caseSensitive: !matchOnSubPath }, location.pathname)
+      })
     )
     .filter(({ match }) => !!match);
   const [firstResult] = results;
@@ -104,7 +104,7 @@ const useMatchedRoute = (
         ))}
         <Route path="*" element={<TransitionWrapper type={transition}>{Fallback ? <Fallback /> : <NotFound />}</TransitionWrapper>} />
       </Routes>
-    ),
+    )
   };
 };
 

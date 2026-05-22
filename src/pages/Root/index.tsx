@@ -56,7 +56,7 @@ const Root = () => {
         top: 0,
         left: 0,
         width: "100vw",
-        height: "100vh",
+        height: "100vh"
       }}
     >
       {loadingApp && (
@@ -69,7 +69,7 @@ const Root = () => {
           display: "flex",
           height: "100%",
           width: "100%",
-          background: "#f5f5f5",
+          background: "#f5f5f5"
         }}
       >
         <Slide direction="down" in={!loadingApp} mountOnEnter>
@@ -81,7 +81,7 @@ const Root = () => {
             position: "relative",
             height: `calc(100% - ${theme.tokens.header.height})`,
             width: "100%",
-            marginTop: theme.tokens.header.height /* Necessary because of AppBar */,
+            marginTop: theme.tokens.header.height /* Necessary because of AppBar */
           }}
         >
           {MatchedElement}

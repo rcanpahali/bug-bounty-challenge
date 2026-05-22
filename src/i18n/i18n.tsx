@@ -26,7 +26,7 @@ const browserLanguage = getBrowserLanguage();
 
 export const defaultTranslationModules = [
   { locale: "de", texts: de },
-  { locale: "en", texts: en },
+  { locale: "en", texts: en }
 ];
 export const defaultLanguages = defaultTranslationModules.map((m) => m.locale);
 
@@ -45,8 +45,8 @@ i18n
     lng: FALLBACK_LANGUAGE || browserLanguage,
     fallbackLng: FALLBACK_LANGUAGE,
     interpolation: {
-      escapeValue: false, // not needed for react as it escapes by default
-    },
+      escapeValue: false // not needed for react as it escapes by default
+    }
   });
 
 export default i18n;
