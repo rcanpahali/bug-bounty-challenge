@@ -4,6 +4,8 @@ export interface OsapiensColors {
   success: string;
   warning: string;
   error: string;
+  backgroundPrimary: string;
+  backgroundSecondary: string;
   lighten0: string;
   lighten1: string;
   lighten2: string;
@@ -62,6 +64,8 @@ export const colors: OsapiensColors = {
   success: "#90c62c",
   warning: "#eebf00",
   error: "#d55342",
+  backgroundPrimary: "#08140C",
+  backgroundSecondary: "#f5f5f5",
   lighten0: "rgba(255, 255, 255, 0.03)",
   lighten1: "rgba(255, 255, 255, 0.05)",
   lighten2: "rgba(255, 255, 255, 0.12)",

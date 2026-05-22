@@ -32,7 +32,7 @@ export const issues = [
   {
     id: "language-switcher",
     icon: "⭐️",
-    isSolved: false,
+    isSolved: true,
     title: "Optional: It would be great to be able to switch the language.",
     description: "Please add a language select control in the app bar to switch the UI language between english and german."
   }
