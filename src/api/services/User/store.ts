@@ -45,7 +45,6 @@ export default class UserStore {
         )
       );
 
-    // review: neverthrow wraps promise-based async calls and allows us to handle success and error cases with `.match()` at call sites,
     return ResultAsync.fromPromise(fetchUser(), toError);
   }
 

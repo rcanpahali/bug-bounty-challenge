@@ -76,7 +76,7 @@ const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>((props, ref) => 
           <Box sx={{ flex: 1, justifyContent: "flex-end", display: "flex", alignItems: "center", gap: 1 }}>
             <ThemeSwitcher />
             <LanguageSwitcher />
-            <Grow in={Boolean(user?.email)} mountOnEnter unmountOnExit>
+            <Grow in>
               <Box sx={{ display: "flex" }}>{user && <AvatarMenu user={user} />}</Box>
             </Grow>
           </Box>
