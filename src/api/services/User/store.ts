@@ -68,6 +68,7 @@ export default class UserStore {
           this.bootstrappedUser = { status: "ready", user };
           this.bootstrapTask = null;
         });
+
         return user;
       })
       .mapErr((error) => {
@@ -75,10 +76,12 @@ export default class UserStore {
           this.bootstrappedUser = { status: "error", error };
           this.bootstrapTask = null;
         });
+
         return error;
       });
 
     this.bootstrapTask = task;
+
     return task;
   }
 }

@@ -33,12 +33,14 @@ const TransitionWrapper: React.FC<TransitionWrapperProps> = ({ children, type })
   }
   if (type.startsWith("slide")) {
     const [, direction] = type.split("-");
+
     return (
       <Slide in direction={direction as "left" | "right" | "up" | "down"} timeout={300}>
         <Box height="100%">{children}</Box>
       </Slide>
     );
   }
+
   return <>{children}</>;
 };
 

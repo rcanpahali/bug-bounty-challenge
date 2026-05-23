@@ -20,16 +20,16 @@ export default tseslint.config(
     files: ["src/**/*.{ts,tsx}"],
     plugins: {
       react: reactPlugin,
-      "react-hooks": reactHooks,
+      "react-hooks": reactHooks
     },
     languageOptions: {
       globals: globals.browser,
       parserOptions: {
-        ecmaFeatures: { jsx: true },
-      },
+        ecmaFeatures: { jsx: true }
+      }
     },
     settings: {
-      react: { version: "detect" },
+      react: { version: "detect" }
     },
     rules: {
       ...reactPlugin.configs.recommended.rules,
@@ -54,11 +54,13 @@ export default tseslint.config(
       "@typescript-eslint/no-empty-object-type": "off",
       // Require curly braces for all control-flow bodies to avoid dangling-else bugs
       curly: "error",
+      // Require a blank line before every return statement
+      "padding-line-between-statements": ["warn", { blankLine: "always", prev: "*", next: "return" }],
       // Disallow unnecessary curly braces around string literals in JSX: {"foo"} → "foo"
-      "react/jsx-curly-brace-presence": ["error", { props: "never", children: "never" }],
-    },
+      "react/jsx-curly-brace-presence": ["error", { props: "never", children: "never" }]
+    }
   },
 
   // Disable rules that conflict with Prettier (must be last)
-  prettierConfig,
+  prettierConfig
 );

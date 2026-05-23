@@ -20,6 +20,7 @@ const lazyLoad = (Component: React.FC) => {
     </Suspense>
   );
   Lazy.displayName = `Lazy(${Component.displayName ?? Component.name})`;
+
   return Lazy;
 };
 

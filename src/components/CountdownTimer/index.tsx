@@ -12,6 +12,7 @@ function getOrInitStartTime(): number {
   }
   const now = Date.now();
   localStorage.setItem(STORAGE_KEYS.TIMER_START, JSON.stringify(now));
+
   return now;
 }
 
