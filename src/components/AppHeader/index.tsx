@@ -1,11 +1,11 @@
 import { Grow, Box, Theme, Toolbar, Typography } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { styled, useTheme } from "@mui/material/styles";
-import { useIntervalEffect } from "@react-hookz/web";
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { User } from "../../api/services/User/store";
 import AvatarMenu from "../AvatarMenu";
+import CountdownTimer from "../CountdownTimer";
 import LanguageSwitcher from "../LanguageSwitcher";
 import ThemeSwitcher from "../ThemeSwitcher";
 
@@ -35,26 +35,12 @@ const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>((props, ref) => 
   const { t } = useTranslation("app");
   const theme = useTheme();
 
-  const [count, setCount] = useState(0);
-  const hours = 1;
-  const minutes = hours * 60;
-  const seconds = minutes * 60;
-  const countdown = seconds - count;
-  const countdownMinutes = `${~~(countdown / 60)}`.padStart(2, "0");
-  const countdownSeconds = (countdown % 60).toFixed(0).padStart(2, "0");
-
-  useIntervalEffect(() => {
-    setCount((c) => c + 1);
-  }, 1000);
-
   return (
     <AppBar ref={ref} position="fixed" sx={{ width: "100vw" }}>
       <Toolbar>
         <Box sx={{ width: "100%", flexDirection: "row", display: "flex" }}>
           <Box>
-            <Typography variant="h6" component="div" color="primary">
-              {countdownMinutes}:{countdownSeconds}
-            </Typography>
+            <CountdownTimer />
           </Box>
           <Box sx={{ width: 20, height: 20, flex: 1 }} />
           <Box sx={{ flex: 2 }}>
