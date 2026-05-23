@@ -18,7 +18,18 @@
       "light": "Light"
     },
     "timer": {
-      "label": "Countdown timer"
+      "controls": {
+        "loginRequired": "Log in to use timer controls",
+        "reset": "Reset",
+        "skip": "Skip"
+      }
+    }
+  },
+  "translation": {
+    "app": {
+      "timer": {
+        "label": "Countdown timer"
+      }
     }
   }
 }

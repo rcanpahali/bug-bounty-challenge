@@ -1,10 +1,12 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { ResultAsync } from "neverthrow";
+import { STORAGE_KEYS } from "../../../storage/keys";
+import { getStorageItem, safeJsonParse } from "../../../utils/storage";
 
 export interface User {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
 }
 
 type TBootstrappedUser = { status: "idle" } | { status: "loading" } | { status: "ready"; user: User } | { status: "error"; error: Error };
@@ -17,6 +19,27 @@ export default class UserStore {
 
   constructor() {
     makeAutoObservable(this);
+
+    const saved = getStorageItem<User>(STORAGE_KEYS.SESSION);
+    if (saved) {
+      this.bootstrappedUser = { status: "ready", user: saved };
+    }
+
+    // persist user session to localStorage whenever it changes
+    reaction(
+      () => this.user,
+      (user) => (user ? localStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(user)) : localStorage.removeItem(STORAGE_KEYS.SESSION))
+    );
+
+    // listen to storage events to sync auth state across tabs
+    window.addEventListener("storage", (e) => {
+      if (e.key === STORAGE_KEYS.SESSION) {
+        runInAction(() => {
+          const parsed = safeJsonParse<User>(e.newValue);
+          this.bootstrappedUser = parsed ? { status: "ready", user: parsed } : { status: "idle" };
+        });
+      }
+    });
   }
 
   get user(): User | null {
@@ -29,6 +52,10 @@ export default class UserStore {
 
   get hasError(): boolean {
     return this.bootstrappedUser.status === "error";
+  }
+
+  get isLoggedIn(): boolean {
+    return this.bootstrappedUser.status === "ready";
   }
 
   get isLoggedOut(): boolean {
@@ -50,12 +77,6 @@ export default class UserStore {
       );
 
     return ResultAsync.fromPromise(fetchUser(), toError);
-  }
-
-  setUserFromSession(user: User) {
-    runInAction(() => {
-      this.bootstrappedUser = { status: "ready", user };
-    });
   }
 
   clearUser() {

@@ -1,14 +1,10 @@
-import React, { createContext, useCallback, useContext, useEffect } from "react";
+import React, { createContext, useCallback, useContext, useState } from "react";
 
-import { STORAGE_KEYS } from "../../../storage/keys";
-import { useTimerStartStorage, useUserStorage } from "../../../storage/preferences";
 import UserStore from "./store";
 
-/* 
+/*
 CONTEXT / PROVIDER INIT
 */
-
-const store = new UserStore();
 
 type TUserContext = {
   store: UserStore;
@@ -19,49 +15,20 @@ type TUserContext = {
 const UserStoreContext = createContext<TUserContext | null>(null);
 
 export const StoreProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const { value: session, set: setSession, remove: removeSession } = useUserStorage();
-  const { value: timerStart, set: setTimerStart } = useTimerStartStorage();
-
-  // Sync store with session storage on mount and when session changes
-  useEffect(() => {
-    if (session) {
-      store.setUserFromSession(session);
-    } else {
-      store.clearUser();
-    }
-  }, [session]);
-
-  useEffect(() => {
-    const handleStorage = (event: StorageEvent) => {
-      if (event.key === STORAGE_KEYS.SESSION && event.newValue === null) {
-        store.clearUser();
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
+  const [store] = useState(() => new UserStore());
 
   const login = useCallback(() => {
-    store
-      .bootstrapUser()
-      .map((user) => {
-        setSession(user);
-        if (timerStart === null) {
-          setTimerStart(Date.now());
-        }
-      })
-      .mapErr((error) => console.error("Login failed:", error));
-  }, [setSession, setTimerStart, timerStart]);
+    store.bootstrapUser().mapErr((error) => console.error("Login failed:", error));
+  }, [store]);
 
   const logout = useCallback(() => {
-    removeSession();
-  }, [removeSession]);
+    store.clearUser();
+  }, [store]);
 
   return <UserStoreContext.Provider value={{ store, login, logout }}>{children}</UserStoreContext.Provider>;
 };
 
-const useUserStore = (): TUserContext => {
+export const useUserStore = (): TUserContext => {
   const ctx = useContext(UserStoreContext);
   if (!ctx) {
     throw new Error("useUserStore must be used within StoreProvider");
@@ -70,13 +37,13 @@ const useUserStore = (): TUserContext => {
   return ctx;
 };
 
-/* 
+/*
 PUBLIC HOOKS
 */
 
 export const useUser = () => useUserStore().store.user;
 export const useUserLoading = () => useUserStore().store.isLoading;
 export const useUserError = () => useUserStore().store.hasError;
-export const useIsLoggedIn = () => useUserStore().store.user !== null;
+export const useIsLoggedIn = () => useUserStore().store.isLoggedIn;
 export const useLogin = () => useUserStore().login;
 export const useLogout = () => useUserStore().logout;

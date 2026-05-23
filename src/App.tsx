@@ -8,6 +8,7 @@ import RootComponent from "./pages/Root/index";
 
 import "./i18n";
 import { StoreProvider as UserStoreProvider } from "./api/services/User";
+import { TimerStoreProvider } from "./api/services/Timer";
 import SnackbarProvider from "./providers/SnackbarProvider";
 import ThemeModeProvider from "./providers/ThemeModeProvider";
 
@@ -21,9 +22,11 @@ const AppContainer = () => {
           <ThemeModeProvider>
             <UserStoreProvider>
               <SnackbarProvider>
-                <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-                  <RootComponent />
-                </HashRouter>
+                <TimerStoreProvider>
+                  <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                    <RootComponent />
+                  </HashRouter>
+                </TimerStoreProvider>
               </SnackbarProvider>
             </UserStoreProvider>
           </ThemeModeProvider>

@@ -7,18 +7,14 @@ import AvatarMenuActions from "./AvatarMenuActions";
 import AvatarMenuFooter from "./AvatarMenuFooter";
 import AvatarMenuUserInfo from "./AvatarMenuUserInfo";
 
-const getInitials = (user: User): string =>
-  [user.firstName, user.lastName]
-    .filter(Boolean)
-    .map((name) => name![0].toLocaleUpperCase())
-    .join("");
+const getInitials = (user: User): string => [user.firstName, user.lastName].map((name) => name[0].toLocaleUpperCase()).join("");
 
 const stringAvatar = (user: User) => {
   const initials = getInitials(user);
   // 36 * 7 <= 255
   const r = Math.floor(parseInt(initials[0] ?? "k", 36) * 7);
   const g = Math.floor(parseInt(initials[1] ?? "l", 36) * 7);
-  const b = Math.floor(parseInt(user?.firstName?.[1] ?? "m", 36) * 7);
+  const b = Math.floor(parseInt(user.firstName[1] ?? "m", 36) * 7);
 
   return {
     sx: { bgcolor: `rgb(${r},${g},${b})`, cursor: "pointer" },

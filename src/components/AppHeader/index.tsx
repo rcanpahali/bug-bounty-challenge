@@ -1,9 +1,12 @@
-import { Grow, Box, Theme, Toolbar, Typography } from "@mui/material";
+import { Button, Grow, Box, Theme, Toolbar, Tooltip, Typography } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { styled, useTheme } from "@mui/material/styles";
+import { observer } from "mobx-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useIsLoggedIn, useLogin } from "../../api/services/User";
 import { User } from "../../api/services/User/store";
+import { useTimerReset, useTimerSkip } from "../../api/services/Timer";
 import AvatarMenu from "../AvatarMenu";
 import CountdownTimer from "../CountdownTimer";
 import LanguageSwitcher from "../LanguageSwitcher";
@@ -14,7 +17,7 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 interface AppHeaderProps {
-  user: User | null; // todo: check this again, should it be nullable or not?
+  user: User | null;
   pageTitle: string;
 }
 
@@ -34,16 +37,45 @@ const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>((props, ref) => 
   const { user, pageTitle } = props;
   const { t } = useTranslation("app");
   const theme = useTheme();
+  const isLoggedIn = useIsLoggedIn();
+  const login = useLogin();
+
+  // these are timer controls to test the timer functionality more easily - not necessarily intended as UX
+  const skip = useTimerSkip();
+  const reset = useTimerReset();
 
   return (
     <AppBar ref={ref} position="fixed" sx={{ width: "100vw" }}>
       <Toolbar>
-        <Box sx={{ width: "100%", flexDirection: "row", display: "flex" }}>
-          <Box>
+        <Box sx={{ width: "100%", display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2, minWidth: 0, overflow: "hidden" }}>
             <CountdownTimer />
+            <Tooltip title={!isLoggedIn ? t("timer.controls.loginRequired") : ""}>
+              <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="inherit"
+                  disabled={!isLoggedIn}
+                  onClick={skip}
+                  sx={{ "&.Mui-disabled": { color: theme.tokens.color.lighten3, borderColor: theme.tokens.color.lighten3 } }}
+                >
+                  {t("timer.controls.skip")}
+                </Button>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="inherit"
+                  disabled={!isLoggedIn}
+                  onClick={reset}
+                  sx={{ "&.Mui-disabled": { color: theme.tokens.color.lighten3, borderColor: theme.tokens.color.lighten3 } }}
+                >
+                  {t("timer.controls.reset")}
+                </Button>
+              </Box>
+            </Tooltip>
           </Box>
-          <Box sx={{ width: 20, height: 20, flex: 1 }} />
-          <Box sx={{ flex: 2 }}>
+          <Box sx={{ minWidth: 0, px: 1 }}>
             <Typography
               sx={{
                 ...typoStyle,
@@ -52,6 +84,7 @@ const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>((props, ref) => 
               }}
               variant="h6"
               component="div"
+              noWrap
             >
               {t("appTitle").toLocaleUpperCase()}
             </Typography>
@@ -59,11 +92,21 @@ const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>((props, ref) => 
               {pageTitle.toLocaleUpperCase()}
             </Typography>
           </Box>
-          <Box sx={{ flex: 1, justifyContent: "flex-end", display: "flex", alignItems: "center", gap: 1 }}>
-            <ThemeSwitcher />
-            <LanguageSwitcher />
+          <Box sx={{ justifyContent: "flex-end", display: "flex", alignItems: "center", gap: 1, minWidth: 0 }}>
+            <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 1 }}>
+              <ThemeSwitcher />
+              <LanguageSwitcher />
+            </Box>
             <Grow in>
-              <Box sx={{ display: "flex" }}>{user && <AvatarMenu user={user} />}</Box>
+              <Box sx={{ display: "flex" }}>
+                {isLoggedIn && user ? (
+                  <AvatarMenu user={user} />
+                ) : (
+                  <Button variant="contained" onClick={login}>
+                    {t("login")}
+                  </Button>
+                )}
+              </Box>
             </Grow>
           </Box>
         </Box>
@@ -73,4 +116,4 @@ const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>((props, ref) => 
 });
 AppHeader.displayName = "AppHeader";
 
-export default AppHeader;
+export default observer(AppHeader);

@@ -1,0 +1,35 @@
+import React, { createContext, useContext, useState } from "react";
+import { useUserStore } from "../User";
+import TimerStore from "./store";
+
+const TimerStoreContext = createContext<TimerStore | null>(null);
+
+export const TimerStoreProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const { store: userStore } = useUserStore();
+  const [timerStore] = useState(() => new TimerStore(userStore));
+
+  return <TimerStoreContext.Provider value={timerStore}>{children}</TimerStoreContext.Provider>;
+};
+
+const useTimerStore = (): TimerStore => {
+  const ctx = useContext(TimerStoreContext);
+  if (!ctx) {
+    throw new Error("useTimerStore must be used within TimerStoreProvider");
+  }
+
+  return ctx;
+};
+
+export const useTimerElapsed = () => useTimerStore().elapsedSeconds;
+export const useTimerLoginStart = () => useTimerStore().intervalStart;
+export const useTimerIsRunning = () => useTimerStore().isRunning;
+export const useTimerSkip = () => {
+  const store = useTimerStore();
+
+  return () => store.skipTimer();
+};
+export const useTimerReset = () => {
+  const store = useTimerStore();
+
+  return () => store.reset();
+};

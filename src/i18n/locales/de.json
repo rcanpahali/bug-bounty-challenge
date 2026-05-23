@@ -18,7 +18,18 @@
       "light": "Hell"
     },
     "timer": {
-      "label": "Countdown-Timer"
+      "controls": {
+        "loginRequired": "Bitte einloggen, um die Timer-Steuerung zu verwenden",
+        "reset": "Zurücksetzen",
+        "skip": "Überspringen"
+      }
+    }
+  },
+  "translation": {
+    "app": {
+      "timer": {
+        "label": "Countdown-Timer"
+      }
     }
   }
 }
