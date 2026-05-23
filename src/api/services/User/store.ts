@@ -24,11 +24,15 @@ export default class UserStore {
   }
 
   get isLoading(): boolean {
-    return this.bootstrappedUser.status === "loading" || this.bootstrappedUser.status === "idle";
+    return this.bootstrappedUser.status === "loading";
   }
 
   get hasError(): boolean {
     return this.bootstrappedUser.status === "error";
+  }
+
+  get isLoggedOut(): boolean {
+    return this.bootstrappedUser.status === "idle";
   }
 
   getOwnUser(): ResultAsync<User, Error> {
@@ -46,6 +50,20 @@ export default class UserStore {
       );
 
     return ResultAsync.fromPromise(fetchUser(), toError);
+  }
+
+  setUserFromSession(user: User) {
+    runInAction(() => {
+      this.bootstrappedUser = { status: "ready", user };
+    });
+  }
+
+  clearUser() {
+    if (this.bootstrappedUser.status === "idle") return;
+    runInAction(() => {
+      this.bootstrappedUser = { status: "idle" };
+      this.bootstrapTask = null;
+    });
   }
 
   bootstrapUser(): ResultAsync<User, Error> {

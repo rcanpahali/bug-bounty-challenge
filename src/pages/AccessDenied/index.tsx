@@ -6,6 +6,7 @@ import { styled, useTheme } from "@mui/material/styles";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
+import { useLogout } from "../../api/services/User";
 
 const Container = styled("div")(() => ({
   display: "flex",
@@ -21,17 +22,7 @@ const AccessDenied: React.FC = () => {
   const theme = useTheme();
 
   const color = theme.palette.error.main;
-
-  React.useEffect(() => {
-    // on screen leave
-    return () => {
-      // clearCache()
-    };
-  }, []);
-
-  // TODO: add all i18n texts to locales and refactor file
-
-  const handleLogout = () => {};
+  const logout = useLogout();
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
@@ -41,7 +32,7 @@ const AccessDenied: React.FC = () => {
           {t("AccessDenied")}
         </Typography>
         <Typography>{t("speakToYourAdmin")}</Typography>
-        <Button sx={{ color }} onClick={handleLogout}>
+        <Button sx={{ color }} onClick={logout}>
           {t("logout")}
         </Button>
       </Container>

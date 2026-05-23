@@ -1,6 +1,7 @@
 import { Avatar, Divider, IconButton } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import React from "react";
+import { useLogout } from "../../api/services/User";
 import { User } from "../../api/services/User/store";
 import AvatarMenuActions from "./AvatarMenuActions";
 import AvatarMenuFooter from "./AvatarMenuFooter";
@@ -32,6 +33,7 @@ interface AvatarMenuProps {
 const AvatarMenu: React.FC<AvatarMenuProps> = ({ user }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const logout = useLogout();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -42,7 +44,8 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({ user }) => {
   };
 
   const handleLogout = () => {
-    console.log("logout");
+    handleClose();
+    logout();
   };
 
   return (

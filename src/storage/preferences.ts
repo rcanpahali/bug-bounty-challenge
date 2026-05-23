@@ -3,6 +3,7 @@ import { STORAGE_KEYS } from "./keys";
 
 export type Theme = "light" | "dark";
 export type Language = "en" | "de";
+export type SessionUser = { firstName?: string; lastName?: string; email?: string };
 
 const stringTransformer = {
   parse: <T extends string>(str: string | null, fb: T | null): T | null => (str as T) ?? fb,
@@ -22,5 +23,19 @@ export function useLanguageStorage() {
     defaultValue: "en",
     initializeWithValue: true,
     ...stringTransformer
+  });
+}
+
+export function useUserStorage() {
+  return useLocalStorageValue<SessionUser | null>(STORAGE_KEYS.SESSION, {
+    defaultValue: null,
+    initializeWithValue: true
+  });
+}
+
+export function useTimerStartStorage() {
+  return useLocalStorageValue<number | null>(STORAGE_KEYS.TIMER_START, {
+    defaultValue: null,
+    initializeWithValue: true
   });
 }

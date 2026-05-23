@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Slide } from "@mui/material";
+import { Box, Button, CircularProgress, Slide, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import AppHeader from "../../components/AppHeader";
 import useMatchedRoute from "../../hooks/useMatchedRoute";
@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { TRoute } from "../../types/global";
 import AccessDenied from "../AccessDenied";
 import { routes as useRoutes } from "../routes";
-import { useUser, useUserError, useUserLoading } from "../../api/services/User";
+import { useIsLoggedIn, useLogin, useUser, useUserError, useUserLoading } from "../../api/services/User";
 
 const hideSplashScreen = () => {
   const splashscreen = document.getElementById("app-splashscreen");
@@ -27,6 +27,8 @@ const Root = () => {
   const user = useUser();
   const loadingApp = useUserLoading();
   const accessDenied = useUserError();
+  const isLoggedIn = useIsLoggedIn();
+  const login = useLogin();
 
   const routes = [...useRoutes] as readonly TRoute[];
   const [fallbackRoute] = routes;
@@ -84,7 +86,16 @@ const Root = () => {
             marginTop: theme.tokens.header.height /* Necessary because of AppBar */
           }}
         >
-          {MatchedElement}
+          {!isLoggedIn && !loadingApp ? (
+            <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%" gap={2}>
+              <Typography variant="h6">{t("notLoggedIn")}</Typography>
+              <Button variant="contained" onClick={login}>
+                {t("login")}
+              </Button>
+            </Box>
+          ) : (
+            MatchedElement
+          )}
         </Box>
       </Box>
     </div>

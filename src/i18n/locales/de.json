@@ -9,11 +9,16 @@
       "welcome": "Willkommen!"
     },
     "imprint": "Impressum",
+    "login": "Anmelden",
     "logout": "Abmelden",
+    "notLoggedIn": "Sie müssen angemeldet sein, um diese Seite anzuzeigen.",
     "speakToYourAdmin": "Wenden Sie sich an Ihren Administrator",
     "theme": {
       "dark": "Dunkel",
       "light": "Hell"
+    },
+    "timer": {
+      "label": "Countdown-Timer"
     }
   }
 }

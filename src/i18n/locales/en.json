@@ -9,11 +9,16 @@
       "welcome": "Welcome!"
     },
     "imprint": "Imprint",
+    "login": "Login",
     "logout": "Logout",
+    "notLoggedIn": "You need to be logged in to view this page.",
     "speakToYourAdmin": "Please speak to your administrator",
     "theme": {
       "dark": "Dark",
       "light": "Light"
+    },
+    "timer": {
+      "label": "Countdown timer"
     }
   }
 }
