@@ -1,4 +1,6 @@
 import { keyframes } from "@emotion/react";
+import { mdiPause, mdiPlay, mdiTimerAlert } from "@mdi/js";
+import Icon from "@mdi/react";
 import { useIntervalEffect } from "@react-hookz/web";
 import { Box, Typography } from "@mui/material";
 import { observer } from "mobx-react";
@@ -27,47 +29,34 @@ const CountdownTimer: React.FC = () => {
   const remaining = Math.max(0, TOTAL_SECONDS - totalElapsed);
   const isExpired = totalElapsed >= TOTAL_SECONDS;
 
-  const timerState = elapsedSeconds === 0 && !isRunning ? "idle" : isRunning ? "running" : "paused";
+  const timerState = isExpired ? "expired" : elapsedSeconds === 0 && !isRunning ? "idle" : isRunning ? "running" : "paused";
 
   useIntervalEffect(() => setNow(Date.now()), isRunning && !isExpired ? 1000 : undefined);
 
   const minutes = String(Math.floor(remaining / 60)).padStart(2, "0");
   const seconds = String(Math.floor(remaining % 60)).padStart(2, "0");
 
-  if (timerState === "idle") {
-    return (
-      <Box display="flex" alignItems="center" gap={0.5}>
-        <Typography variant="h6" component="span" aria-label={t("app.timer.label")} sx={({ palette }) => ({ color: palette.primary.main })}>
-          ▶ --:--
-        </Typography>
-      </Box>
-    );
-  }
-
-  if (timerState === "paused") {
-    return (
-      <Box display="flex" alignItems="center" gap={0.5}>
-        <Typography variant="h6" component="span" aria-label={t("app.timer.label")} sx={({ palette }) => ({ color: palette.primary.main })}>
-          ⏸ {`${minutes}:${seconds}`}
-        </Typography>
-      </Box>
-    );
-  }
+  const iconPath = timerState === "paused" ? mdiPause : timerState === "expired" ? mdiTimerAlert : mdiPlay;
+  const timeDisplay = timerState === "idle" ? "--:--" : `${minutes}:${seconds}`;
 
   return (
-    <Box display="flex" alignItems="center" gap={0.5}>
-      <Typography
-        variant="h6"
-        component="span"
-        aria-live="polite"
-        aria-atomic="true"
-        aria-label={t("app.timer.label")}
-        sx={({ palette }) => ({
-          color: isExpired ? palette.error.main : palette.primary.main,
-          ...(isExpired && { animation: `${blink} 1s ease-in-out infinite` })
-        })}
-      >
-        {isExpired ? `▶| ${minutes}:${seconds}` : `▶ ${minutes}:${seconds}`}
+    <Box
+      display="flex"
+      alignItems="center"
+      gap={0.5}
+      aria-label={t("app.timer.label")}
+      aria-live="polite"
+      aria-atomic="true"
+      sx={(theme) => ({
+        color: timerState === "expired" ? theme.tokens.color.error : theme.tokens.color.primary,
+        ...(timerState === "expired" && { animation: `${blink} 1s ease-in-out infinite` })
+      })}
+    >
+      <Box component="span" sx={{ display: "flex" }}>
+        <Icon path={iconPath} size={1} />
+      </Box>
+      <Typography variant="h6" component="span">
+        {timeDisplay}
       </Typography>
     </Box>
   );

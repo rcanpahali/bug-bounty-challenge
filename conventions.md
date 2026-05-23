@@ -12,23 +12,26 @@ This is an attempt to provide a helpful but not exhaustive developer guide.
 - **Internationalization**: i18next + react-i18next
 - **Icons**: Material Design Icons (`@mdi/js`, `@mdi/react`)
 - **Utilities**: Lodash
+- **Validation**: Zod 4 — schema validation for runtime data (storage, API responses)
+- **Error Handling**: neverthrow — `ResultAsync<T, Error>` for async store actions
+- **Storage Hooks**: @react-hookz/web — `useLocalStorageValue`, `useIntervalEffect`
 - **Notifications**: notistack
+- **Formatting**: Prettier (enforced via ESLint Prettier plugin)
 - **Versioning**: Changesets (`@changesets/cli`)
 
 ---
 
 ## Naming Conventions
 
-| Construct             | Convention                    | Example                        |
-| --------------------- | ----------------------------- | ------------------------------ |
-| React components      | PascalCase                    | `AppHeader`, `AvatarMenu`      |
-| Component folders     | PascalCase                    | `components/AppHeader/`        |
-| Hook files/functions  | camelCase prefixed with `use` | `useMatchedRoute`              |
-| MobX store classes    | PascalCase                    | `UserStore`                    |
-| Enums                 | `E` prefix + PascalCase       | `ERoute`, `ActionResultStatus` |
-| Type aliases          | `T` prefix + PascalCase       | `TRoute`, `PathParams`         |
-| i18n translation keys | dot-notated lowercase         | `home.welcome`, `app.title`    |
-| CSS-in-JS class maps  | `PREFIX` + `-` + descriptor   | `App-success`, `App-error`     |
+| Construct             | Convention                    | Example                     |
+| --------------------- | ----------------------------- | --------------------------- |
+| React components      | PascalCase                    | `AppHeader`, `AvatarMenu`   |
+| Component folders     | PascalCase                    | `components/AppHeader/`     |
+| Hook files/functions  | camelCase prefixed with `use` | `useMatchedRoute`           |
+| MobX store classes    | PascalCase                    | `UserStore`                 |
+| Enums                 | `E` prefix + PascalCase       | `ERoute`                    |
+| Type aliases          | `T` prefix + PascalCase       | `TRoute`, `PathParams`      |
+| i18n translation keys | dot-notated lowercase         | `home.welcome`, `app.title` |
 
 ---
 
@@ -71,7 +74,9 @@ This is an attempt to provide a helpful but not exhaustive developer guide.
   export const StoreProvider: React.FC = ({ children }) => <DomainContext.Provider value={new Store()}>{children}</DomainContext.Provider>;
   export const useDomainStore = () => useContext(DomainContext);
   ```
-- All providers are combined in `CombinedStoreProvider` inside `App.tsx`.
+- Providers are stacked individually in `App.tsx` in dependency order (e.g. `UserStoreProvider` wraps `TimerStoreProvider` because the timer depends on the user store).
+- Stores that depend on other stores receive them as constructor arguments; the provider reads the dependency via its own hook before instantiating the child store.
+- Use MobX `reaction()` for side effects that respond to observable state changes (e.g. persisting to localStorage, auto-starting the timer on login).
 - Observer components should be wrapped with `observer()` from `mobx-react`.
 
 ---
@@ -98,8 +103,20 @@ This is an attempt to provide a helpful but not exhaustive developer guide.
 
 - All user-facing strings must use `useTranslation("app")` and reference keys defined in `src/i18n/locales/en.json` and `de.json`.
 - Do **not** hardcode display text in JSX—use `t("key")` instead.
-- The default/fallback language is `"en"`.
+- For strings that contain HTML markup (e.g. bold text), use the `Trans` component with a `components` prop — do not embed raw HTML in translation values.
+- The default/fallback language is `"en"`. Language preference is persisted in `localStorage` under `app.language`.
+- `i18next LanguageDetector` resolves language in this order: localStorage → browser locale → `"en"`.
 - Namespace: `app` (default). A `common` namespace is also declared but reserved for shared strings.
+- Use `npm run i18n:extract` to extract new keys and `npm run i18n:status` to check for missing translations.
+
+---
+
+## Storage
+
+- All `localStorage` keys are declared as constants in `src/storage/keys.ts` — never use raw string literals elsewhere.
+- Use `useLocalStorageValue()` from `@react-hookz/web` for reactive reads/writes (automatically syncs across tabs).
+- All values read from storage must be validated with a Zod schema before use. See `src/storage/preferences.ts` for the pattern (Zod enum + custom serializer).
+- Preference hooks (`useThemeStorage`, `useLanguageStorage`) live in `src/storage/preferences.ts`.
 
 ---
 
