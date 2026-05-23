@@ -6,7 +6,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "cSpell.words": ["bgcolor", "hookz", "languagedetector", "Lngs", "neverthrow", "notistack", "osapiens"],
+  "cSpell.words": ["bgcolor", "hookz", "languagedetector", "Lngs", "neverthrow", "notistack", "osapiens", "Stringifier"],
   "chat.tools.terminal.autoApprove": {
     "npx prettier": true,
     "npx eslint": true,

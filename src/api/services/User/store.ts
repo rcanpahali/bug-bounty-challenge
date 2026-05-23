@@ -1,13 +1,11 @@
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { ResultAsync } from "neverthrow";
 import { STORAGE_KEYS } from "../../../storage/keys";
-import { getStorageItem, safeJsonParse } from "../../../utils/storage";
+import { safeJsonParse } from "../../../utils/storage";
+import { UserSchema } from "./schema";
+import type { User } from "./schema";
 
-export interface User {
-  firstName: string;
-  lastName: string;
-  email: string;
-}
+export type { User };
 
 type TBootstrappedUser = { status: "idle" } | { status: "loading" } | { status: "ready"; user: User } | { status: "error"; error: Error };
 
@@ -20,9 +18,10 @@ export default class UserStore {
   constructor() {
     makeAutoObservable(this);
 
-    const saved = getStorageItem<User>(STORAGE_KEYS.SESSION);
-    if (saved) {
-      this.bootstrappedUser = { status: "ready", user: saved };
+    const raw = safeJsonParse(localStorage.getItem(STORAGE_KEYS.SESSION));
+    const saved = UserSchema.safeParse(raw);
+    if (saved.success) {
+      this.bootstrappedUser = { status: "ready", user: saved.data };
     }
 
     // persist user session to localStorage whenever it changes
@@ -35,8 +34,9 @@ export default class UserStore {
     window.addEventListener("storage", (e) => {
       if (e.key === STORAGE_KEYS.SESSION) {
         runInAction(() => {
-          const parsed = safeJsonParse<User>(e.newValue);
-          this.bootstrappedUser = parsed ? { status: "ready", user: parsed } : { status: "idle" };
+          const raw = safeJsonParse(e.newValue);
+          const parsed = UserSchema.safeParse(raw);
+          this.bootstrappedUser = parsed.success ? { status: "ready", user: parsed.data } : { status: "idle" };
         });
       }
     });

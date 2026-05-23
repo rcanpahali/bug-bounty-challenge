@@ -2,6 +2,10 @@ import React, { createContext, useContext, useState } from "react";
 import { useUserStore } from "../User";
 import TimerStore from "./store";
 
+/*
+CONTEXT / PROVIDER INIT
+*/
+
 const TimerStoreContext = createContext<TimerStore | null>(null);
 
 export const TimerStoreProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -19,6 +23,10 @@ const useTimerStore = (): TimerStore => {
 
   return ctx;
 };
+
+/*
+PUBLIC HOOKS
+*/
 
 export const useTimerElapsed = () => useTimerStore().elapsedSeconds;
 export const useTimerLoginStart = () => useTimerStore().intervalStart;

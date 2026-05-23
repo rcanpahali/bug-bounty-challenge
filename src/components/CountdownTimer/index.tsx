@@ -38,7 +38,7 @@ const CountdownTimer: React.FC = () => {
     return (
       <Box display="flex" alignItems="center" gap={0.5}>
         <Typography variant="h6" component="span" aria-label={t("app.timer.label")} sx={({ palette }) => ({ color: palette.primary.main })}>
-          🕗 --:--
+          ▶ --:--
         </Typography>
       </Box>
     );
@@ -67,7 +67,7 @@ const CountdownTimer: React.FC = () => {
           ...(isExpired && { animation: `${blink} 1s ease-in-out infinite` })
         })}
       >
-        {isExpired ? `🕗 ${minutes}:${seconds}` : `▶ ${minutes}:${seconds}`}
+        {isExpired ? `▶| ${minutes}:${seconds}` : `▶ ${minutes}:${seconds}`}
       </Typography>
     </Box>
   );
