@@ -1,6 +1,6 @@
 {
   "name": "bug-bounty-challenge",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "description": "React and TypeScript example starter project",
   "keywords": [
@@ -56,7 +56,8 @@
     "lint": "eslint src && prettier --check src",
     "lint:fix": "eslint src --fix && prettier --write src",
     "i18n:extract": "i18next-cli extract",
-    "i18n:status": "i18next-cli status"
+    "i18n:status": "i18next-cli status",
+    "version": "changeset version"
   },
   "browserslist": [
     ">0.2%",
