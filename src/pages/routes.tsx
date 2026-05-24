@@ -2,9 +2,10 @@ import { mdiHome } from "@mdi/js";
 import Icon from "@mdi/react";
 import { CircularProgress, Grow } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import { ERoute, TRoute } from "../types/global";
-import Home from "./Home";
+
+const Home = lazy(() => import("./Home"));
 
 const Loading = (
   <Grow in={true}>
@@ -13,7 +14,8 @@ const Loading = (
     </Box>
   </Grow>
 );
-const lazyLoad = (Component: React.FC) => {
+
+const lazyLoad = (Component: React.ComponentType) => {
   const Lazy = () => (
     <Suspense fallback={Loading}>
       <Component />

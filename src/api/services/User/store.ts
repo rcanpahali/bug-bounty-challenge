@@ -12,8 +12,9 @@ type TBootstrappedUser = { status: "idle" } | { status: "loading" } | { status: 
 const toError = (e: unknown): Error => (e instanceof Error ? e : new Error(String(e)));
 
 export default class UserStore {
-  bootstrappedUser: TBootstrappedUser = { status: "idle" };
+  private bootstrappedUser: TBootstrappedUser = { status: "idle" };
   private bootstrapTask: ResultAsync<User, Error> | null = null;
+  private readonly onStorage: (e: StorageEvent) => void;
 
   constructor() {
     makeAutoObservable(this);
@@ -31,7 +32,7 @@ export default class UserStore {
     );
 
     // listen to storage events to sync auth state across tabs
-    window.addEventListener("storage", (e) => {
+    this.onStorage = (e: StorageEvent) => {
       if (e.key === STORAGE_KEYS.SESSION) {
         runInAction(() => {
           const raw = safeJsonParse(e.newValue);
@@ -39,7 +40,12 @@ export default class UserStore {
           this.bootstrappedUser = parsed.success ? { status: "ready", user: parsed.data } : { status: "idle" };
         });
       }
-    });
+    };
+    window.addEventListener("storage", this.onStorage);
+  }
+
+  dispose() {
+    window.removeEventListener("storage", this.onStorage);
   }
 
   get user(): User | null {

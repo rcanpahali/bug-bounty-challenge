@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 
 import UserStore from "./store";
 
@@ -16,6 +16,9 @@ const UserStoreContext = createContext<TUserContext | null>(null);
 
 export const StoreProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [store] = useState(() => new UserStore());
+
+  // Cleanup on unmount
+  useEffect(() => () => store.dispose(), [store]);
 
   const login = useCallback(() => {
     store.bootstrapUser().mapErr((error) => console.error("Login failed:", error));

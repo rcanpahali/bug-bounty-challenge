@@ -8,6 +8,7 @@ export const TOTAL_SECONDS = 3600;
 export default class TimerStore {
   elapsedSeconds = 0;
   intervalStart: number | null = null;
+  private readonly onStorage: (e: StorageEvent) => void;
 
   // timer store is wired to user store to react to login/logout events and start/pause the timer accordingly
   constructor(private userStore: UserStore) {
@@ -46,7 +47,7 @@ export default class TimerStore {
     );
 
     // listen to storage events to sync timer states across tabs
-    window.addEventListener("storage", (e) => {
+    this.onStorage = (e: StorageEvent) => {
       if (e.key === STORAGE_KEYS.ELAPSED_SECONDS && e.newValue) {
         runInAction(() => {
           this.elapsedSeconds = safeJsonParse<number>(e.newValue) ?? this.elapsedSeconds;
@@ -57,7 +58,12 @@ export default class TimerStore {
           this.intervalStart = safeJsonParse<number>(e.newValue);
         });
       }
-    });
+    };
+    window.addEventListener("storage", this.onStorage);
+  }
+
+  dispose() {
+    window.removeEventListener("storage", this.onStorage);
   }
 
   get isRunning(): boolean {

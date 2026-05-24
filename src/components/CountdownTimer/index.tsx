@@ -6,8 +6,7 @@ import { Box, Typography } from "@mui/material";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useTimerElapsed, useTimerIsRunning, useTimerLoginStart } from "../../api/services/Timer";
-import { TOTAL_SECONDS } from "../../api/services/Timer/store";
+import { TOTAL_SECONDS, useTimerElapsed, useTimerIsRunning, useTimerLoginStart } from "../../api/services/Timer";
 
 const blink = keyframes`
   0%, 100% { opacity: 1; }

@@ -16,7 +16,7 @@ Always run both `npm run typecheck` (TypeScript) and `npm run lint` (ESLint) aft
 - **State**: MobX store class per domain in `src/api/services/<Domain>/store.ts`; state mutations inside async actions must use `runInAction`. Context + Provider + hook exported from the domain's `index.tsx`.
 - **Async actions**: Use `neverthrow` `ResultAsync<T, Error>` for async store actions. Prefer `ResultAsync.fromPromise(...).map(...)` and handle outcomes with `.match(...)` at call sites.
 - **Routing**: Paths defined in the `ERoute` enum (`src/types/global.ts`); route list in `src/pages/routes.tsx`.
-- **i18n**: All display strings go through `useTranslation("app")` and must have entries in both `src/i18n/locales/en.json` and `de.json`. Never hardcode UI text.
+- **i18n**: All display strings go through `useTranslation("app")` and must have entries in both `src/i18n/locales/en.json` and `de.json`. Never hardcode UI text. Never update i18n translation files manually — use the `npm run i18n:extract` script to extract new keys and update translation files.
 - **Styling**: Use MUI `sx` prop or `styled()` for all styles; prefer `theme.tokens.*`, `theme.palette.*`, and `theme.spacing()` over hardcoded values.
 - **Enums**: prefix with `E` (e.g. `ERoute`). **Type aliases**: prefix with `T` (e.g. `TRoute`).
 

@@ -7,6 +7,7 @@ export enum ERoute {
 
 export type TRoute = {
   path: ERoute;
+  parentPath?: ERoute;
   Icon?: React.FC | ReactElement;
   Component: React.FC;
 };

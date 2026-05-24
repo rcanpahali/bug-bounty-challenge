@@ -3,6 +3,7 @@
     "AccessDenied": "Access is denied",
     "appTitle": "Supplier OS Application",
     "dataPrivacy": "Data Privacy Statement",
+    "goHome": "Go Home",
     "home": {
       "intro": "This is a demo application with some glitches and bugs, where we hope that you can find them. 😃 Here the list of <b>known</b> issues:",
       "sidenote": "All bugs have a different level of complexity and all of them are pretty common (real world problems for any react developer). To solve all open points a different set of skills are required: googling, experience, reading docs and error messages, creativity and analytical thinking.",
@@ -12,6 +13,9 @@
     "login": "Login",
     "logout": "Logout",
     "notLoggedIn": "You need to be logged in to view this page.",
+    "routes": {
+      "home": "Home"
+    },
     "speakToYourAdmin": "Please speak to your administrator",
     "theme": {
       "dark": "Dark",

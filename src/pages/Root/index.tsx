@@ -5,10 +5,11 @@ import useMatchedRoute from "../../hooks/useMatchedRoute";
 import { observer } from "mobx-react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { TRoute } from "../../types/global";
+import { Navigate, useLocation } from "react-router-dom";
+import { ERoute, TRoute } from "../../types/global";
 import AccessDenied from "../AccessDenied";
 import { routes as useRoutes } from "../routes";
-import { useIsLoggedIn, useLogin, useUser, useUserError, useUserLoading } from "../../api/services/User";
+import { useIsLoggedIn, useLogin, useUserError, useUserLoading } from "../../api/services/User";
 
 const hideSplashScreen = () => {
   const splashscreen = document.getElementById("app-splashscreen");
@@ -24,7 +25,7 @@ const hideSplashScreen = () => {
 const Root = () => {
   const { t } = useTranslation("app");
   const theme = useTheme();
-  const user = useUser();
+  const location = useLocation();
   const loadingApp = useUserLoading();
   const accessDenied = useUserError();
   const isLoggedIn = useIsLoggedIn();
@@ -35,16 +36,18 @@ const Root = () => {
   const Fallback = fallbackRoute.Component;
   const { route = fallbackRoute, MatchedElement } = useMatchedRoute(routes, Fallback, { matchOnSubPath: true });
 
-  let pageTitle = t(`routes.${route.path}`);
-
-  if (route.path.indexOf("data") > -1 || route.path.indexOf("settings") > -1) {
-    const [, groupName] = route.path.split("/");
-    pageTitle = t(`routes./${groupName}`);
-  }
+  const routeLabels: Partial<Record<ERoute, string>> = {
+    [ERoute.HOME]: t("routes.home")
+  };
+  const pageTitle = routeLabels[route?.parentPath ?? route?.path] ?? "";
 
   useEffect(() => {
     hideSplashScreen();
   }, []);
+
+  if (location.pathname === ERoute.ROOT) {
+    return <Navigate to={ERoute.HOME} replace />;
+  }
 
   if (accessDenied) {
     return <AccessDenied />;
@@ -75,7 +78,7 @@ const Root = () => {
         }}
       >
         <Slide direction="down" in={!loadingApp} mountOnEnter>
-          <AppHeader user={user} pageTitle={pageTitle} />
+          <AppHeader pageTitle={pageTitle} />
         </Slide>
         <Box
           component="main"

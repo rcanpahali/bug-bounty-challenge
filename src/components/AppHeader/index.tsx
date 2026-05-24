@@ -4,8 +4,7 @@ import { styled, useTheme } from "@mui/material/styles";
 import { observer } from "mobx-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useIsLoggedIn, useLogin } from "../../api/services/User";
-import { User } from "../../api/services/User/store";
+import { useIsLoggedIn, useLogin, useUser } from "../../api/services/User";
 import { useTimerReset, useTimerSkip } from "../../api/services/Timer";
 import AvatarMenu from "../AvatarMenu";
 import CountdownTimer from "../CountdownTimer";
@@ -17,7 +16,6 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 interface AppHeaderProps {
-  user: User | null;
   pageTitle: string;
 }
 
@@ -34,9 +32,10 @@ const AppBar = styled(MuiAppBar)<AppBarProps>(({ theme }) => ({
 }));
 
 const AppHeader = React.forwardRef<HTMLElement, AppHeaderProps>((props, ref) => {
-  const { user, pageTitle } = props;
+  const { pageTitle } = props;
   const { t } = useTranslation("app");
   const theme = useTheme();
+  const user = useUser();
   const isLoggedIn = useIsLoggedIn();
   const login = useLogin();
 

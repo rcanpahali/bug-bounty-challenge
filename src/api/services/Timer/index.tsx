@@ -1,6 +1,8 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useUserStore } from "../User";
-import TimerStore from "./store";
+import TimerStore, { TOTAL_SECONDS } from "./store";
+
+export { TOTAL_SECONDS };
 
 /*
 CONTEXT / PROVIDER INIT
@@ -11,6 +13,9 @@ const TimerStoreContext = createContext<TimerStore | null>(null);
 export const TimerStoreProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { store: userStore } = useUserStore();
   const [timerStore] = useState(() => new TimerStore(userStore));
+
+  // Cleanup on unmount
+  useEffect(() => () => timerStore.dispose(), [timerStore]);
 
   return <TimerStoreContext.Provider value={timerStore}>{children}</TimerStoreContext.Provider>;
 };

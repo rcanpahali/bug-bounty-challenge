@@ -14,25 +14,21 @@ import ThemeModeProvider from "./providers/ThemeModeProvider";
 
 const AppContainer = () => {
   return (
-    <>
-      {/* Kickstart a simple scoped CSS baseline to build upon. */}
-      {/* Required to override Material-UI's styles via CSS modules. */}
-      <Suspense fallback={<div>loading...</div>}>
-        <StyledEngineProvider injectFirst>
-          <ThemeModeProvider>
-            <UserStoreProvider>
-              <SnackbarProvider>
-                <TimerStoreProvider>
-                  <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-                    <RootComponent />
-                  </HashRouter>
-                </TimerStoreProvider>
-              </SnackbarProvider>
-            </UserStoreProvider>
-          </ThemeModeProvider>
-        </StyledEngineProvider>
-      </Suspense>
-    </>
+    <Suspense fallback={<div>loading...</div>}>
+      <StyledEngineProvider injectFirst>
+        <ThemeModeProvider>
+          <UserStoreProvider>
+            <SnackbarProvider>
+              <TimerStoreProvider>
+                <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                  <RootComponent />
+                </HashRouter>
+              </TimerStoreProvider>
+            </SnackbarProvider>
+          </UserStoreProvider>
+        </ThemeModeProvider>
+      </StyledEngineProvider>
+    </Suspense>
   );
 };
 
