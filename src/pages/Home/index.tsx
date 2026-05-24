@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Chip, Container, Typography } from "@mui/material";
 import { observer } from "mobx-react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -28,9 +28,12 @@ const Home = () => {
                 {issue.icon}
               </Typography>
               <ListItemText primary={issue.title} secondary={issue.description} />
-              <Typography variant="h5" sx={{ p: 2 }}>
-                {issue.isSolved ? "✅" : "⬜"}
-              </Typography>
+              <Chip
+                label={issue.isSolved ? t("home.solved") : t("home.unsolved")}
+                color={issue.isSolved ? "success" : "default"}
+                size="small"
+                sx={{ ml: 2 }}
+              />
             </ListItem>
           ))}
         </List>

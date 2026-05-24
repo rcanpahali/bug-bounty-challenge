@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 
 export enum ERoute {
   ROOT = "/",
+  LOGIN = "/login",
   HOME = "/home"
 }
 

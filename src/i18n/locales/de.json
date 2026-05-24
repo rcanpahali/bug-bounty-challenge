@@ -7,6 +7,8 @@
     "home": {
       "intro": "Dies ist eine Demo-Anwendung mit einigen Fehlern und Bugs, bei der wir hoffen, dass du sie finden kannst. 😃 Hier die Liste der <b>bekannten</b> Probleme:",
       "sidenote": "Alle Bugs haben einen unterschiedlichen Schwierigkeitsgrad und sind allesamt sehr verbreitet (typische Probleme für jeden React-Entwickler). Um alle offenen Punkte zu lösen, sind verschiedene Fähigkeiten erforderlich: Googeln, Erfahrung, Dokumentation und Fehlermeldungen lesen, Kreativität und analytisches Denken.",
+      "solved": "Gelöst",
+      "unsolved": "Offen",
       "welcome": "Willkommen!"
     },
     "imprint": "Impressum",
@@ -14,7 +16,7 @@
     "logout": "Abmelden",
     "notLoggedIn": "Sie müssen angemeldet sein, um diese Seite anzuzeigen.",
     "routes": {
-      "home": "Startseite"
+      "home": "Interview - Home"
     },
     "speakToYourAdmin": "Wenden Sie sich an Ihren Administrator",
     "theme": {

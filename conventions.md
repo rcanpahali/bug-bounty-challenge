@@ -27,7 +27,7 @@ This is an attempt to provide a helpful but not exhaustive developer guide.
 | --------------------- | ----------------------------- | --------------------------- |
 | React components      | PascalCase                    | `AppHeader`, `AvatarMenu`   |
 | Component folders     | PascalCase                    | `components/AppHeader/`     |
-| Hook files/functions  | camelCase prefixed with `use` | `useMatchedRoute`           |
+| Hook files/functions  | camelCase prefixed with `use` | `useIsLoggedIn`             |
 | MobX store classes    | PascalCase                    | `UserStore`                 |
 | Enums                 | `E` prefix + PascalCase       | `ERoute`                    |
 | Type aliases          | `T` prefix + PascalCase       | `TRoute`, `PathParams`      |
@@ -54,7 +54,7 @@ This is an attempt to provide a helpful but not exhaustive developer guide.
   interface MyProps { title: string; }
   const MyComponent: React.FC<MyProps> = ({ title }) => { ... };
   ```
-- Wrap lazily loaded page components with a `<Suspense>` fallback (see `lazyLoad` helper in `routes.tsx`).
+- Wrap lazily loaded page components with `lazy()` from React; the `<Suspense>` boundary lives in `Root`.
 - Styled components use MUI's `styled()` API with typed props:
   ```tsx
   const AppBar = styled(MuiAppBar)<AppBarProps>(({ theme }) => ({ ... }));
@@ -92,10 +92,13 @@ This is an attempt to provide a helpful but not exhaustive developer guide.
 
 ## Routing
 
-- Routes are defined centrally in `src/pages/routes.tsx` as a `TRoute[]` array.
+- Routes are defined centrally in `src/pages/routes.tsx` as a `TRoute[]` array — protected routes only.
 - Paths are typed via the `ERoute` enum in `src/types/global.ts`.
-- Use `buildUrl(path, params)` from `src/utils/router.ts` to construct URLs programmatically.
 - The app uses `HashRouter`; keep this in mind when constructing links.
+- `Root` (`src/pages/Root/index.tsx`) is the routing table — `<Routes>/<Route>` declarations only, no business logic.
+- **Auth guard**: wrap protected routes with `<AuthGuard />` (a layout route). It redirects unauthenticated users to `/login` and renders `<AccessDenied />` on auth errors. Never put auth checks inside page components.
+- **Layout**: `<AppLayout />` (a layout route) provides the app chrome (header + main area) via `<Outlet />`. It wraps both public and protected routes so all pages share the same shell.
+- Page titles are resolved in `AppLayout` via the `routeLabels` map — add a new entry there when adding a route.
 
 ---
 

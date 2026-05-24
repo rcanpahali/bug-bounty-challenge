@@ -96,6 +96,21 @@ npm run lint:fix    # Auto-fix lint and formatting issues
 
 ---
 
+### Routing & Auth Guards
+
+- `/` redirects to `/login`. Unauthenticated visits to any protected route also redirect there.
+- Protected routes are wrapped by `AuthGuard`, a layout route that reads MobX auth state and renders `<Outlet />` or redirects — no auth logic inside page components.
+- `Root` is a thin routing table: `<Routes>` declarations only, no business logic.
+
+**To test:**
+
+1. Open `/` — redirected to `/login`.
+2. Manually navigate to `/#/home` while logged out — redirected back to `/login`.
+3. Log in — redirected to `/home` automatically.
+4. Log in from one tab and open `/login` in another — immediately redirected to `/home`.
+
+---
+
 ## Architecture Notes
 
 - **Provider order** in `App.tsx`: `ThemeModeProvider` → `UserStoreProvider` → `TimerStoreProvider` — each layer only depends on what's above it.
