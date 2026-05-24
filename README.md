@@ -116,4 +116,13 @@ npm run lint:fix    # Auto-fix lint and formatting issues
 - **Provider order** in `App.tsx`: `ThemeModeProvider` → `UserStoreProvider` → `TimerStoreProvider` — each layer only depends on what's above it.
 - **Storage keys** are centralized in `src/storage/keys.ts`.
 - **Route paths** are defined in the `ERoute` enum (`src/types/global.ts`).
+- **Routing layers**: `AppLayout` (chrome) → `AuthGuard` (auth boundary) → page component. Each layer has one responsibility.
 - State mutations inside async MobX actions use `runInAction()` per MobX conventions.
+
+## Next Steps
+
+Because of time constraints, some main functionalities are still missing, and there are plenty of opportunities for improvement:
+
+- Add tests (unit, coverage, e2e).
+- Add error handling UI (e.g. toast notifications).
+- Add a CI pipeline with lint/typecheck steps and maybe even automated tests.
