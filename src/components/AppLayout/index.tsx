@@ -19,10 +19,7 @@ const AppLayout: React.FC = () => {
   const pageTitle = routeLabels[location.pathname as ERoute] ?? "";
 
   return (
-    <div
-      id="portal-container"
-      style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh" }}
-    >
+    <div id="portal-container" style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh" }}>
       <Box
         sx={{
           display: "flex",
