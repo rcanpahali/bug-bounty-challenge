@@ -1,25 +1,52 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 
-import Store from "./store";
+import UserStore from "./store";
 
-/* 
+/*
 CONTEXT / PROVIDER INIT
 */
 
-const UserStoreContext = createContext<Store | null>(null);
-
-export const StoreProvider: React.FC = (props) => {
-  const { children } = props;
-
-  return (
-    <UserStoreContext.Provider value={new Store()}>
-      {children}
-    </UserStoreContext.Provider>
-  );
+type TUserContext = {
+  store: UserStore;
+  login: () => void;
+  logout: () => void;
 };
 
-/* 
-HOOK DEFINITION
+const UserStoreContext = createContext<TUserContext | null>(null);
+
+export const StoreProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const [store] = useState(() => new UserStore());
+
+  // Cleanup on unmount
+  useEffect(() => () => store.dispose(), [store]);
+
+  const login = useCallback(() => {
+    store.bootstrapUser().mapErr((error) => console.error("Login failed:", error));
+  }, [store]);
+
+  const logout = useCallback(() => {
+    store.clearUser();
+  }, [store]);
+
+  return <UserStoreContext.Provider value={{ store, login, logout }}>{children}</UserStoreContext.Provider>;
+};
+
+export const useUserStore = (): TUserContext => {
+  const ctx = useContext(UserStoreContext);
+  if (!ctx) {
+    throw new Error("useUserStore must be used within StoreProvider");
+  }
+
+  return ctx;
+};
+
+/*
+PUBLIC HOOKS
 */
 
-export const useUserStore = () => useContext(UserStoreContext);
+export const useUser = () => useUserStore().store.user;
+export const useUserLoading = () => useUserStore().store.isLoading;
+export const useUserError = () => useUserStore().store.hasError;
+export const useIsLoggedIn = () => useUserStore().store.isLoggedIn;
+export const useLogin = () => useUserStore().login;
+export const useLogout = () => useUserStore().logout;

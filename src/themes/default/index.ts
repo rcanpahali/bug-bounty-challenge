@@ -1,23 +1,20 @@
 import { merge } from "lodash";
 
-import { createTheme } from "@mui/material/styles";
+import { createTheme, darken, ThemeOptions } from "@mui/material/styles";
+import { common, grey } from "@mui/material/colors";
 
 // import MaterialDesignIcons from "!!url-loader!@mdi/font/fonts/materialdesignicons-webfont.woff2"
 import tokens, { fonts, OsapiensThemeTokens } from "./tokens";
-
-// TODO: override styles of all anchor elements
-// a,
-// a:hover {
-//   color: $primary;
-// }
-// a:visited {
-//   color: adjust-color($color: $primary, $lightness: -20%);
-// }
 
 declare module "@mui/material/styles" {
   interface Theme {
     tokens: OsapiensThemeTokens;
   }
+
+  interface ThemeOptions {
+    tokens?: OsapiensThemeTokens;
+  }
+
   interface BreakpointOverrides {
     xs: true;
     sm: true;
@@ -92,24 +89,47 @@ const commonTheme = {
         "@font-face": fonts
       }
     }
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        a: {
+          color: tokens.color.primary,
+          "&:hover": {
+            color: tokens.color.primary
+          },
+          "&:visited": {
+            color: darken(tokens.color.primary, 0.2)
+          }
+        }
+      }
+    }
   }
 };
 
-const muiBaseTheme = createTheme();
-
-const tokensLight: any = merge({}, commonTheme, {
+const tokensLight: ThemeOptions = merge({}, commonTheme, {
   palette: {
-    mode: "light"
+    mode: "light" as const
   },
-  tokens
+  tokens,
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: common.black,
+          color: common.white
+        }
+      }
+    }
+  }
 });
 
-const tokensDark: any = merge({}, commonTheme, {
+const tokensDark: ThemeOptions = merge({}, commonTheme, {
   palette: {
-    mode: "dark",
+    mode: "dark" as const,
     background: {
-      default: muiBaseTheme.palette.common.black,
-      paper: muiBaseTheme.palette.grey["900"]
+      default: common.black,
+      paper: grey[900]
     }
   },
   tokens

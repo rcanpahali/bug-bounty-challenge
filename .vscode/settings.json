@@ -1,0 +1,14 @@
+{
+  "eslint.useFlatConfig": true,
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "chat.tools.terminal.autoApprove": {
+    "npx prettier": true,
+    "npx eslint": true,
+    "npx changeset": true
+  }
+}
