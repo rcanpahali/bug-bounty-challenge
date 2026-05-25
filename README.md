@@ -1,4 +1,6 @@
-# Bug Bounty Challenge
+# Frontend Coding Challenge
+
+Implementation PR with inline comments: [github.com/rcanpahali/bug-bounty-challenge/pull/1](https://github.com/rcanpahali/bug-bounty-challenge/pull/1)
 
 A React 19 + TypeScript SPA built with Vite. This document covers what was implemented and how to verify each area.
 
