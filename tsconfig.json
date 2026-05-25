@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "esModuleInterop": true, // Enables interoperability between CommonJS and ES Modules
+    "lib": ["dom", "esnext"],
     "target": "esnext",
     "allowJs": true,
     "skipLibCheck": true,
@@ -12,18 +9,18 @@
     "resolveJsonModule": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
-    "moduleDetection": "force",
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
+    "moduleResolution": "bundler", // Module resolution strategy for bundlers like Vite
+    "moduleDetection": "force", // Forces all files to be treated as modules
+    "isolatedModules": true, // Ensures each file can be safely transpiled in isolation
+    "noEmit": true, // Does not emit output files (handled by the bundler)
+    "jsx": "react-jsx", // Use the React 17+ automatic JSX transform
 
     /* Linting */
     "strict": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-    "forceConsistentCasingInFileNames": true,
+    "noUncheckedSideEffectImports": true, // Checks side-effect-only imports for type errors
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["./src"]
 }

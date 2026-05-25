@@ -41,6 +41,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.6.0",
+    "cspell": "^8.0.0",
     "i18next-cli": "^1.58.0",
     "prettier": "^3.8.3",
     "typescript": "^5.9.0",
@@ -53,8 +54,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src && prettier --check src",
-    "lint:fix": "eslint src --fix && prettier --write src",
+    "lint": "eslint src && prettier --check src && cspell \"src/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint src --fix && prettier --write src && cspell \"src/**/*.{ts,tsx}\"",
     "i18n:extract": "i18next-cli extract",
     "i18n:status": "i18next-cli status",
     "version": "changeset version"
